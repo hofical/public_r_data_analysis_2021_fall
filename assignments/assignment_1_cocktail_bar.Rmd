@@ -34,7 +34,7 @@ Read the cocktail dataset from: <https://github.com/nthun/cocktail-balance> You 
 
 ```{r}
 cocktail_data <- read.delim("~/R/cocktail-balance/cocktail_data.tsv")
-View(cocktail_data)
+view(cocktail_data)
 ```
 
 ## 2. Transform the data table and clean the ingredient variable!
@@ -42,7 +42,15 @@ View(cocktail_data)
 The ingredients are currently in a single cell for each cocktail. It would be better to put them in separate rows. Also, the variable should be cleaned of all quantities (e.g. 1/2 oz, 2 dashes, etc.), and the indicator of alcohol content (e.g. 47.3% abv). You will need to use this cleaned table in later tasks.
 
 ```{r}
-
+alcohol_remove <- "\\(" %R% DGT %R% DGT %R% "%" %R%  " " %R% "abv\\)"
+text_remove <- or("oz", "dashes", "drops")
+number_remove <- DGT %R% or(" ", "\\/")
+rest_remove <- DGT %R% "." %R% DGT %R% DGT
+cocktail_data <- cocktail_data %>%
+     mutate(ingredients = str_remove_all(ingredients, pattern = alcohol_remove)) %>%
+    mutate(ingredients = str_remove_all(ingredients, pattern = text_remove)) %>%
+     mutate(ingredients = str_remove_all(ingredients, pattern = number_remove)) %>%
+    mutate(ingredients = str_remove_all(ingredients, pattern = rest_remove))
 ```
 
 ## 3. All ingredients in alphabetical order
