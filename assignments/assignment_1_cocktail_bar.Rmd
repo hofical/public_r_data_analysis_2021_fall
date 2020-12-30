@@ -46,11 +46,13 @@ alcohol_remove <- "\\(" %R% DGT %R% DGT %R% "%" %R%  " " %R% "abv\\)"
 text_remove <- or("oz", "dashes", "drops")
 number_remove <- DGT %R% or(" ", "\\/")
 rest_remove <- DGT %R% "." %R% DGT %R% DGT
+alcohol_remove2 <- "\\(" %R% DGT %R% DGT %R% "." %R% DGT %R% "%" %R%  " " %R% "abv\\)"
 cocktail_data <- cocktail_data %>%
-     mutate(ingredients = str_remove_all(ingredients, pattern = alcohol_remove)) %>%
-    mutate(ingredients = str_remove_all(ingredients, pattern = text_remove)) %>%
-     mutate(ingredients = str_remove_all(ingredients, pattern = number_remove)) %>%
-    mutate(ingredients = str_remove_all(ingredients, pattern = rest_remove))
+    mutate(ingredients = str_remove_all(ingredients, pattern = alcohol_remove)) %>%
+   mutate(ingredients = str_remove_all(ingredients, pattern = text_remove)) %>%
+   mutate(ingredients = str_remove_all(ingredients, pattern = number_remove)) %>%
+    mutate(ingredients = str_remove_all(ingredients, pattern = rest_remove)) %>%
+    mutate(ingredients = str_remove_all(ingredients, pattern = alcohol_remove2))
 ```
 
 ## 3. All ingredients in alphabetical order
