@@ -60,7 +60,9 @@ cocktail_data <- cocktail_data %>%
 Before opening the bar, you need to find a reliable supplier that has all the ingredients. You need to send a list of all possible ingredients you will need. They don't need the quantities (i.e. how many of these are needed), just the names of the ingredients.
 
 ```{r}
-
+tidy_cocktail <- cocktail_data %>%
+   unnest_tokens(only_words, ingredients)
+View(tidy_cocktail)
 ```
 
 ## 4. Number of unique ingredients
