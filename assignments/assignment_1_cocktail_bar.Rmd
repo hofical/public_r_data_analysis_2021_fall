@@ -52,7 +52,8 @@ cocktail_data <- cocktail_data %>%
    mutate(ingredients = str_remove_all(ingredients, pattern = text_remove)) %>%
    mutate(ingredients = str_remove_all(ingredients, pattern = number_remove)) %>%
     mutate(ingredients = str_remove_all(ingredients, pattern = rest_remove)) %>%
-    mutate(ingredients = str_remove_all(ingredients, pattern = alcohol_remove2))
+    mutate(ingredients = str_remove_all(ingredients, pattern = alcohol_remove2))%>%
+     mutate(ingredients = str_replace_all(ingredients, "\\<br\\/\\>", "\\/n"))
 ```
 
 ## 3. All ingredients in alphabetical order
