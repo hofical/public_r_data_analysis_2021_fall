@@ -65,15 +65,20 @@ cocktail_data <- cocktail_data %>%
 +     mutate(ingredients = str_replace_all(ingredients, "\\<br\\/\\>", ","))
 cocktail_data <- cocktail_data %>%
     unnest_tokens(unnested_tokens, ingredients, token = stringr::str_split, pattern = ",")
-
+cocktail_data <- cocktail_data %>%
++         mutate(unnested_tokens = str_trim(cocktail_data$unnested_tokens, side = "both"))
+cocktail_data %>%
++     count(unnested_tokens)
 ```
 
 ## 4. Number of unique ingredients
+#There are 69 ingredients as there are 69 rows displayed by the count function
 
 How many different ingredients you will need?
 
 ```{r}
-
+cocktail_data %>%
++     count(unnested_tokens)
 ```
 
 ## 5. What are the top 10 ingredients?
