@@ -53,7 +53,7 @@ cocktail_data <- cocktail_data %>%
    mutate(ingredients = str_remove_all(ingredients, pattern = number_remove)) %>%
     mutate(ingredients = str_remove_all(ingredients, pattern = rest_remove)) %>%
     mutate(ingredients = str_remove_all(ingredients, pattern = alcohol_remove2))%>%
-     mutate(ingredients = str_replace_all(ingredients, "\\<br\\/\\>", "\\/n"))
+    
 ```
 
 ## 3. All ingredients in alphabetical order
@@ -61,9 +61,11 @@ cocktail_data <- cocktail_data %>%
 Before opening the bar, you need to find a reliable supplier that has all the ingredients. You need to send a list of all possible ingredients you will need. They don't need the quantities (i.e. how many of these are needed), just the names of the ingredients.
 
 ```{r}
-tidy_cocktail <- cocktail_data %>%
-   unnest_tokens(only_words, ingredients)
-View(tidy_cocktail)
+cocktail_data <- cocktail_data %>%
++     mutate(ingredients = str_replace_all(ingredients, "\\<br\\/\\>", ","))
+cocktail_data <- cocktail_data %>%
+    unnest_tokens(unnested_tokens, ingredients, token = stringr::str_split, pattern = ",")
+
 ```
 
 ## 4. Number of unique ingredients
