@@ -18,6 +18,10 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(rebus)
+library(tidytext)
+library(dplyr)
+library(stringr)
 ```
 
 # Background
@@ -52,7 +56,7 @@ cocktail_data <- cocktail_data %>%
    mutate(ingredients = str_remove_all(ingredients, pattern = text_remove)) %>%
    mutate(ingredients = str_remove_all(ingredients, pattern = number_remove)) %>%
     mutate(ingredients = str_remove_all(ingredients, pattern = rest_remove)) %>%
-    mutate(ingredients = str_remove_all(ingredients, pattern = alcohol_remove2))%>%
+    mutate(ingredients = str_remove_all(ingredients, pattern = alcohol_remove2))
     
 ```
 
@@ -62,13 +66,13 @@ Before opening the bar, you need to find a reliable supplier that has all the in
 
 ```{r}
 cocktail_data <- cocktail_data %>%
-+     mutate(ingredients = str_replace_all(ingredients, "\\<br\\/\\>", ","))
+     mutate(ingredients = str_replace_all(ingredients, "\\<br\\/\\>", ","))
 cocktail_data <- cocktail_data %>%
     unnest_tokens(unnested_tokens, ingredients, token = stringr::str_split, pattern = ",")
 cocktail_data <- cocktail_data %>%
-+         mutate(unnested_tokens = str_trim(cocktail_data$unnested_tokens, side = "both"))
+    mutate(unnested_tokens = str_trim(cocktail_data$unnested_tokens, side = "both"))
 cocktail_data %>%
-+     count(unnested_tokens)
+     count(unnested_tokens)
 ```
 
 ## 4. Number of unique ingredients
@@ -78,7 +82,7 @@ How many different ingredients you will need?
 
 ```{r}
 cocktail_data %>%
-+     count(unnested_tokens)
+     count(unnested_tokens)
 ```
 
 ## 5. What are the top 10 ingredients?
@@ -87,9 +91,9 @@ What are the 10 most frequently used ingredients? If there are ties, you can lis
 
 ```{r}
 cocktail_data %>%
-+     count(unnested_tokens) %>%
-+     top_n(15) %>%
-+     arrange(desc(n))
+     count(unnested_tokens) %>%
+     top_n(15) %>%
+     arrange(desc(n))
 ```
 
 ## 6. Which cocktail(s) has/have the most ingredients?
