@@ -105,7 +105,7 @@ cocktail_data %>%
 Count the number of ingredients and filter all the cocktails that has that many.
 
 ```{r}
-ingredient_table <- cocktail_data %>%
+cocktail_data %>%
           count(name, sort = TRUE)
 ```
 
@@ -114,7 +114,9 @@ ingredient_table <- cocktail_data %>%
 Count all cocktails with only one ingredient, and
 
 ```{r}
-
+one_ingredient_table <- cocktail_data %>%
+          count(unnested_tokens, sort = TRUE) %>%
+    filter(n==1)
 ```
 
 ## 8. Which cocktail has an ingredient that is only used in one cocktail?
