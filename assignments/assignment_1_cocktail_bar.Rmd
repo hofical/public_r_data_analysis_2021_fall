@@ -134,9 +134,8 @@ rear_ingredient_cocktail <- table_together %>%
 ## 9. What are the cocktails without rare ingredients?
 
 ```{r}
-no_rear_ingredient_cocktail <- table_together %>%
-     filter(n >= 2) %>%
-     distinct(name)
+no_rear_ingredient_cocktail <- anti_join(table_together, rear_ingredient_cocktail, by = "name") %>%
+    distinct(name)
 
 ```
 
