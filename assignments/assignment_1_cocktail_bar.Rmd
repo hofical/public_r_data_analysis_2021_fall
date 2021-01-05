@@ -122,13 +122,20 @@ one_ingredient_table <- cocktail_data %>%
 ## 8. Which cocktail has an ingredient that is only used in one cocktail?
 
 ```{r}
+unnest_data <- cocktail_data %>%
+    count(unnested_tokens)
+table_together <- left_join(cocktail_data, unnest_data)
+ only_ingredient_cocktail <- table_together %>%
+    filter(n == 1) %>%
+     distinct(name)
 
 ```
 
 ## 9. What are the cocktails without rare ingredients?
 
 ```{r}
-  
+
+
 ```
 
 ## 10. Create a cheat sheet for the bartender!
