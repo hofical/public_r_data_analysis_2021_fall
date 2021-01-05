@@ -144,9 +144,9 @@ no_rear_ingredient_cocktail <- anti_join(table_together, rear_ingredient_cocktai
 Create a matrix that shows all cocktail names as rows and all ingredients as columns. When a cocktail requires an ingredient, there should be an "X" in the cell, otherwise, the cell should remain empty. Example:
 
 ```{r}
-
+ cheat_sheet <- as.data.frame.matrix(table(cheat_sheet_df), stringsAsFactors = FALSE)
 ```
-
+#I cannot seem to do the "x" part, I hope the bartender can figure it out.
 ```{r}
 
 ```
