@@ -20,6 +20,7 @@ You will have to create 3 plots based on the datasets and instructions detailed 
 knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 library(tidytuesdayR)
+library(viridis)
 ```
 
 ## Task 1: Climbing expeditions
@@ -32,7 +33,14 @@ The 2020-09-22 TidyTueday datasets are about climbing expeditions. From the thre
 
 ```{r}
 expeditions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-22/expeditions.csv')
-
+ count_table <- expedition_data %>%
+     count(peak_name)
+full_table <- left_join(expeditions, count_table)
+reduced_table <- full_table %>%
+     filter(n > 85) %>%
+  arrange(desc(n))
+ggplot(reduced_table, aes( y = reorder(peak_name, n), fill = season)) + geom_bar() + ggtitle("The 15 most popular peaks stacked by season of expedition") + labs(x  = "Number of Expeditions") + theme_light() + scale_fill_viridis(discrete = TRUE, option ="D") + theme(legend.position = "bottom")
+ 
 ```
 
 ## Task 2: PhDs awarded
