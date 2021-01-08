@@ -59,6 +59,8 @@ phd_field_sum <- phd_field %>%
      drop_na() %>%
      group_by(broad_field, year) %>%
      summarise(sum_n_phds = sum(n_phds))
+
+ggplot(phd_field_sum, aes(x= year, y = sum_n_phds, color = broad_field)) + geom_line(size = 1.2) + ggtitle("Number of awarded PhD's in the US by year") + theme_minimal() + theme(axis.title.x=element_blank(), axis.title.y=element_blank()) + scale_x_continuous(breaks = c(2008,2010,2012,2014,2016)) + scale_color_brewer(palette="Dark2")
 ```
 
 ## Task 3: Commute in the US
