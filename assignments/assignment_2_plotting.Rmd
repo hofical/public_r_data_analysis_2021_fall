@@ -54,7 +54,11 @@ Notes:
 -   The line size is 1.2, the colors are from the brewer "Dark2" palette. The theme is set to minimal.
 
 ```{r}
-
+phd_field <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-02-19/phd_by_field.csv")
+phd_field_sum <- phd_field %>%
+     drop_na() %>%
+     group_by(broad_field, year) %>%
+     summarise(sum_n_phds = sum(n_phds))
 ```
 
 ## Task 3: Commute in the US
@@ -68,5 +72,6 @@ Notes:
 -   The point size is 2, . The theme is set to light.
 
 ```{r}
+commute_mode <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-11-05/commute.csv")
 
 ```
