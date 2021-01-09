@@ -21,6 +21,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 library(tidytuesdayR)
 library(viridis)
+library(scales)
 ```
 
 ## Task 1: Climbing expeditions
@@ -75,5 +76,10 @@ Notes:
 
 ```{r}
 commute_mode <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-11-05/commute.csv")
+commute_mode_summed <- commute_mode %>%
+     group_by(mode, state, state_abb, state_region) %>%
+     summarise(sum_n = sum(n))
+commute_mode_summed <- spread(commute_mode_summed, mode, sum_n)
+ggplot(commute_mode_summed, aes(x = Walk, y = Bike, color = state_region )) + geom_point(size = 2) + scale_x_log10(labels = comma) + scale_y_log10(labels = comma) + theme_light() + ggtitle("Number of people biking vs waling to work in eacs USA state") + labs(x = "Number of people walking to work (logN)", y = "Number of people biking to work (LogN)") + geom_text(aes(label=state_abb), color = "black")
 
 ```
