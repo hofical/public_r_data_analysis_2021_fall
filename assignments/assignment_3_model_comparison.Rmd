@@ -61,7 +61,8 @@ Read the dataset used in this assignment. Pay attention to the extension of the 
 ```{r}
 library(dplyr)
 library(tidyverse)
-lirary(skimr)
+library(skimr)
+library(broom)
 toothache_full <- read_excel("data/assignment_3_dataset.xlsx")
 ```
 
@@ -90,8 +91,8 @@ If you find values in the dataset during the EDA, that are not correct based on 
 
 ```{r}
 toothache_full <- toothache_full %>%
-+     mutate(pain = str_replace(pain, "50", "5")) %>%
-+     mutate(mindfulness = str_replace(mindfulness, "6.22", "6"))
+     mutate(pain = str_replace(pain, "50", "5")) %>%
+     mutate(mindfulness = str_replace(mindfulness, "6.22", "6"))
 ```
 
 ### Model diagnostics
@@ -100,7 +101,6 @@ toothache_full <- toothache_full %>%
 In order to test the more complex model for outliers and to test the assumptions first build the model.
 
 ```{r}
-
 ```
 
 #### Checking for influential outliers
