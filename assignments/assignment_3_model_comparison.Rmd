@@ -59,17 +59,29 @@ In your discussion of the findings, briefly interpret the results of the above a
 Read the dataset used in this assignment. Pay attention to the extension of the datafile.
 
 ```{r}
-
+library(dplyr)
+library(tidyverse)
+lirary(skimr)
+toothache_full <- read_excel("data/assignment_3_dataset.xlsx")
 ```
 
 ## Data and model diagnostics 
 ### Data diagnostics
+It seems that there is one incorrect value (out of range) in both pain and mindfulness. The pain problem seems to be a typo (50 instead of 5) and I will treat it as that, the mindfulness is hard to guess, I will treat is as a maximum value (6).
 #### Descriptives of the variables
 
 Run an exploratory data analysis (EDA) to investigate the dataset.
 
 ```{r}
-
+skim(toothache_full)
+ggplot(toothache_full, aes(x=STAI_trait)) + geom_histogram()
+ggplot(toothache_full, aes(x=pain_cat)) + geom_histogram()
+ggplot(toothache_full, aes(x=mindfulness)) + geom_histogram()
+ggplot(toothache_full, aes(x=pain)) + geom_histogram()
+toothache_full %>%
+   count(pain)
+toothache_full %>% 
+   arrange(desc(mindfulness))
 ```
 
 #### Correct coding errors
@@ -77,7 +89,9 @@ Run an exploratory data analysis (EDA) to investigate the dataset.
 If you find values in the dataset during the EDA, that are not correct based on the provided descriptions of the variables of the dataset please correct them here.
 
 ```{r}
-
+toothache_full <- toothache_full %>%
++     mutate(pain = str_replace(pain, "50", "5")) %>%
++     mutate(mindfulness = str_replace(mindfulness, "6.22", "6"))
 ```
 
 ### Model diagnostics
