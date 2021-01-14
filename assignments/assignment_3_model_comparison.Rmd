@@ -54,6 +54,7 @@ In your discussion of the findings, briefly interpret the results of the above a
 
 # Solution
 
+It seems that the simpler model is a much worse model to predict pain in the patients. The simple model explains 7,5% of variance while the more complex model (after dropping a variable due to multicollinearity reasons) accounts for 32%. 
 ## Read the data
 
 Read the dataset used in this assignment. Pay attention to the extension of the datafile.
@@ -216,12 +217,12 @@ summary(simple_model)
 Create the more complex model based on the results of the model diagnostics. Also, get the results that needs to be reported based on the What to report section.
 
 ```{r}
-
+summary(updt_complex_model)
 ```
 
 Compare the two models.
 
 ```{r}
-
+summary(simple_model)
 ```
 
