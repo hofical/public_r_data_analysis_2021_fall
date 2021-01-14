@@ -63,12 +63,13 @@ library(dplyr)
 library(tidyverse)
 library(skimr)
 library(broom)
+library(olsrrDi)
 toothache_full <- read_excel("data/assignment_3_dataset.xlsx")
 ```
 
 ## Data and model diagnostics 
 ### Data diagnostics
-It seems that there is one incorrect value (out of range) in both pain and mindfulness. The pain problem seems to be a typo (50 instead of 5) and I will treat it as that, the mindfulness is hard to guess, I will treat is as a maximum value (6).
+It seems that there is one incorrect value (out of range) in both pain and mindfulness. The pain problem seems to be a typo (50 instead of 5) and I will treat it as that, the mindfulness is hard to guess, I will treat is as a maximum value (6). There was also an error in the variable "sex" with one entry of "woman" instead of "female"
 #### Descriptives of the variables
 
 Run an exploratory data analysis (EDA) to investigate the dataset.
@@ -83,6 +84,8 @@ toothache_full %>%
    count(pain)
 toothache_full %>% 
    arrange(desc(mindfulness))
+toothache_full %>%
+   count(sex)
 ```
 
 #### Correct coding errors
@@ -92,7 +95,15 @@ If you find values in the dataset during the EDA, that are not correct based on 
 ```{r}
 toothache_full <- toothache_full %>%
      mutate(pain = str_replace(pain, "50", "5")) %>%
-     mutate(mindfulness = str_replace(mindfulness, "6.22", "6"))
+     mutate(mindfulness = str_replace(mindfulness, "6.22", "6")) %>%
+     mutate(sex = str_replace_all(sex, "female", "2")) %>%
+     mutate(sex = str_replace_all(sex, "male", "0")) %>%
+     mutate(sex = str_replace_all(sex, "woman", "1"))
+toothache_full<- toothache_full %>%
+   mutate(pain = as.numeric(pain)) %>%
+   mutate(sex = as.numeric(sex)) %>%
+   mutate(mindfulness = as.numeric(mindfulness))
+     
 ```
 
 ### Model diagnostics
@@ -101,6 +112,7 @@ toothache_full <- toothache_full %>%
 In order to test the more complex model for outliers and to test the assumptions first build the model.
 
 ```{r}
+complex_model <- lm(pain ~ age + sex + STAI_trait + pain_cat + mindfulness + cortisol_serum + cortisol_saliva, data = toothache_full) 
 ```
 
 #### Checking for influential outliers
@@ -108,7 +120,10 @@ In order to test the more complex model for outliers and to test the assumptions
 Check for outlier values in the model.
 
 ```{r}
-
+complex_model %>%
+    augment() %>%
+    arrange(desc(.cooksd)) %>%
+    head()
 ```
 
 #### Checking assumptions
@@ -116,19 +131,20 @@ Check for outlier values in the model.
 Check the normality assumption.
 
 ```{r}
+plot(complex_model, 2)
 
 ```
 
 Check the linearity assumption.
 
 ```{r}
-
+plot(complex_model, 1)
 ```
 
 Check the homoscedasticty assumption (homogeneity of variance).
 
 ```{r}
-
+plot(complex_model, 3)
 ```
 
 Check the multicollinearity assumption.
@@ -140,6 +156,7 @@ https://statisticalhorizons.com/multicollinearity
 http://blog.minitab.com/blog/understanding-statistics/handling-multicollinearity-in-regression-analysis
 
 ```{r}
+ ols_coll_diag(complex_model)
 
 ```
 
@@ -148,13 +165,16 @@ http://blog.minitab.com/blog/understanding-statistics/handling-multicollinearity
 If based on the assumption tests you decide to drop a predictor variable you should do that here. Create your updated model.
 
 ```{r}
-
+updt_complex_model <- lm(pain ~ age + sex + STAI_trait + pain_cat + mindfulness + cortisol_serum, data = toothache_full)
 ```
 
 #### Checking outliers of the updated model
 
 ```{r}
-
+updt_complex_model %>%
+    augment() %>%
+    arrange(desc(.cooksd)) %>%
+    head()
 ```
 
 #### Checking assumptions of the updated model
@@ -162,24 +182,25 @@ If based on the assumption tests you decide to drop a predictor variable you sho
 Normality assumption
 
 ```{r}
-
+plot(updt_complex_model, 2)
 ```
 
 Linearity assumption
 
 ```{r}
-
+plot(updt_complex_model, 1)
 ```
 
 Homoscedasticty assumption (homogeneity of variance)
 
 ```{r}
-
+plot(updt_complex_model, 3)
 ```
 
 Multicollinearity assumption
 
 ```{r}
+ols_coll_diag(updt_complex_model)
 
 ```
 
@@ -188,7 +209,8 @@ Multicollinearity assumption
 Create the simple model and get the results of the model that needs to be reported based on the What to report section.
 
 ```{r}
-
+simple_model <- lm(pain~age + sex, data = toothache_full)
+summary(simple_model)
 ```
 
 Create the more complex model based on the results of the model diagnostics. Also, get the results that needs to be reported based on the What to report section.
