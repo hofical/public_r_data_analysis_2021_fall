@@ -1,0 +1,58 @@
+---
+title: "Final Project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyverse)
+library(skimr)
+library(broom)
+library(olsrr)
+library(viridis)
+library(scales)
+library(readr)
+library(stringr)
+```
+
+# Analyzing Fast-food nutrients
+IDE ÍRNI KELL még!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.
+
+##
+The data seems to be in a fine format. The "salad" column does not seem to provide any information so it is better to drop it. Another notable shortcoming of the dataset is that it does not include the weight of the meals which would allow us for a better analysis. Keeping that in mind the main question is: if you are hungry and you really want to go to a fast food restaurant, which one should you choose based on its overall nutrient values?
+To allow a better understanding it is better to change the raw values into percentage values. We use the FDA recommendations for a 2000 calorie diet to do that. (https://www.fda.gov/media/135301/download) It is clear from the source of original dataset (https://fastfoodnutrition.org/mcdonalds/artisan-grilled-chicken-sandwich) that it uses the same measurements (g,mg, etc.) as the FDA recommendations. Vitamins only have to be converted by decimals as they were in percent measurement from the start. 
+
+```{r, include = TRUE, message = FALSE }
+
+fastfood_calories <- read_csv("~/R/Tryagain/data/fastfood_calories.csv")
+str(fastfood_calories)
+fastfood_calories <- fastfood_calories %>%
+  select(1:17) %>%
+  mutate(total_fat_perc = total_fat/78)%>%
+  mutate(sat_fat_perc = sat_fat/20)%>%
+  mutate(trans_fat_perc = trans_fat/20)%>%
+  mutate(cholesterol_perc = cholesterol/300)%>%
+  mutate(sodium_perc = sodium/2300)%>%
+  mutate(total_carb_perc = total_carb/275)%>%
+  mutate(fiber_perc = fiber/28)%>%
+  mutate(sugar_perc = sugar/50)%>%
+  mutate(protein_perc = protein/50)%>%
+  mutate(vit_a_perc = vit_a/100)%>%
+mutate(vit_c_perc = vit_c/100)%>%
+mutate(calcium_perc = calcium/100)
+```
+
+## Creating percentage table
+```{r, include = TRUE, message = FALSE }
+fast_food_percent <- fastfood_calories %>%
+    select(1:4, 15:29)
+
+```
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

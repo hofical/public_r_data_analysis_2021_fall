@@ -64,7 +64,7 @@ library(dplyr)
 library(tidyverse)
 library(skimr)
 library(broom)
-library(olsrrDi)
+library(olsrr)
 toothache_full <- read_excel("data/assignment_3_dataset.xlsx")
 ```
 
